@@ -1,428 +1,300 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import AdminFoodCard from "./adminfoodcard";
 
-type Order = {
-  id: number;
-  customer: string;
-  food: string;
-  date: string;
-  total: string;
-  address: string;
-  status: "Pending" | "Delivered" | "Cancelled";
+type Category = {
+  _id: string;
+  categoryName: string;
+  foodCount: number;
 };
 
-const orders: Order[] = [
-  {
-    id: 1,
-    customer: "Amgalan",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Pending",
-  },
-  {
-    id: 4,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Delivered",
-  },
-  {
-    id: 5,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Delivered",
-  },
-  {
-    id: 6,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Delivered",
-  },
-  {
-    id: 7,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Delivered",
-  },
-  {
-    id: 8,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Cancelled",
-  },
-  {
-    id: 9,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Cancelled",
-  },
-  {
-    id: 10,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Cancelled",
-  },
-  {
-    id: 11,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Cancelled",
-  },
-  {
-    id: 12,
-    customer: "Test@gamil.com",
-    food: "2 foods",
-    date: "2024/12/20",
-    total: "$26.97",
-    address: "2024/12/СБД, 12-р хороолол, СБД нэгдсэн эмнэлэг",
-    status: "Cancelled",
-  },
-];
+type Food = {
+  _id: string;
+  foodName: string;
+  foodPrice: number;
+  ingredients: string;
+  foodImage: string;
+  category?: string;
+  categoryId?: string;
+  categoryName?: string;
+};
+
+type CategoryResponse = {
+  categories: Category[];
+  allFoodCount: number;
+};
+
+type FoodResponse = {
+  results?: Food[];
+};
 
 export default function AdminPage() {
-  const [activeButton, setActiveButton] = useState("orders");
+  const [activeButton, setActiveButton] = useState("food");
 
-  const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [foods, setFoods] = useState<Food[]>([]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  const [selectedStatus, setSelectedStatus] =
-    useState<Order["status"]>("Pending");
+  const [loading, setLoading] = useState(true);
 
-  const toggleOrder = (id: number) => {
-    setSelectedOrders((prev) =>
-      prev.includes(id)
-        ? prev.filter((orderId) => orderId !== id)
-        : [...prev, id],
-    );
-  };
+  // CATEGORY MODAL
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
-  const toggleAllOrders = () => {
-    if (selectedOrders.length === orders.length) {
-      setSelectedOrders([]);
-    } else {
-      setSelectedOrders(orders.map((order) => order.id));
+  // FOOD MODAL
+  const [showFoodModal, setShowFoodModal] = useState(false);
+
+  // CATEGORY NAME
+  const [categoryName, setCategoryName] = useState("");
+
+  // FOOD FORM
+  const [foodForm, setFoodForm] = useState({
+    foodName: "",
+    price: "",
+    image: "",
+    ingredients: "",
+    category: "",
+  });
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // Category болон Food мэдээллийг backend-ээс авах
+  const getData = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const [categoryResponse, foodResponse] = await Promise.all([
+        fetch("http://localhost:8000/category"),
+        fetch("http://localhost:8000/food"),
+      ]);
+
+      if (!categoryResponse.ok) {
+        throw new Error("Category data авахад алдаа гарлаа");
+      }
+
+      if (!foodResponse.ok) {
+        throw new Error("Food data авахад алдаа гарлаа");
+      }
+
+      const categoryData: CategoryResponse = await categoryResponse.json();
+
+      const foodData: FoodResponse | Food[] = await foodResponse.json();
+
+      console.log("CATEGORY DATA:", categoryData);
+      console.log("FOOD DATA:", foodData);
+
+      // Category мэдээллийг state-д хадгалах
+      setCategories(
+        Array.isArray(categoryData.categories) ? categoryData.categories : [],
+      );
+
+      // Food мэдээллийг state-д хадгалах
+      const foodList = Array.isArray(foodData)
+        ? foodData
+        : (foodData.results ?? []);
+
+      setFoods(foodList);
+    } catch (error) {
+      console.error("Data авах үед алдаа гарлаа:", error);
+
+      setError(
+        error instanceof Error ? error.message : "Data авах үед алдаа гарлаа",
+      );
+
+      setCategories([]);
+      setFoods([]);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Сонгосон category-аар food-уудыг шүүх
+  const filteredFoods =
+    selectedCategory === "all"
+      ? foods
+      : foods.filter((food) => {
+          // Food-ийн category нь сонгосон category ID-тэй таарч байгаа эсэх
+          if (food.category === selectedCategory) {
+            return true;
+          }
+
+          // categoryId ашиглаж байгаа тохиолдол
+          if (food.categoryId === selectedCategory) {
+            return true;
+          }
+
+          // Backend categoryName буцааж байгаа тохиолдол
+          const selectedCategoryData = categories.find(
+            (category) => category._id === selectedCategory,
+          );
+
+          if (
+            selectedCategoryData &&
+            food.categoryName === selectedCategoryData.categoryName
+          ) {
+            return true;
+          }
+
+          return false;
+        });
+
+  // Одоогоор сонгогдсон category-ийн нэр
+  const selectedCategoryName =
+    selectedCategory === "all"
+      ? "All Dishes"
+      : (categories.find((category) => category._id === selectedCategory)
+          ?.categoryName ?? "All Dishes");
+
   return (
-    <div className="min-h-screen bg-[#f7f7f7] p-6">
+    <div className="min-h-screen bg-[#f5f5f5] p-6">
       <div className="mx-auto flex max-w-[1440px] gap-6">
-        {/* ================= SIDEBAR ================= */}
-
-        <aside className="flex h-[calc(100vh-48px)] w-[205px] shrink-0 flex-col items-center gap-8 rounded-[20px] bg-white p-4">
+        {/* Зүүн талын цэс */}
+        <aside className="flex min-h-[calc(100vh-48px)] w-[205px] shrink-0 flex-col rounded-[20px] bg-white p-5">
           {/* Logo */}
-
           <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="logo" width={40} height={40} />
+            <Image src="/logo.png" alt="NomNom" width={32} height={32} />
 
-            <div className="flex flex-col">
-              <span className="text-[18px] font-bold leading-[20px] text-[#111827]">
-                NomNom
-              </span>
+            <div>
+              <p className="text-[16px] font-bold leading-4">NomNom</p>
 
-              <span className="text-[11px] leading-[14px] text-gray-400">
-                Swift delivery
-              </span>
+              <p className="text-[10px] text-gray-400">Swift delivery</p>
             </div>
           </div>
 
-          {/* Sidebar buttons */}
-
-          <div className="flex w-full flex-col gap-1">
+          {/* Цэс */}
+          <div className="mt-8 flex flex-col gap-2">
+            {/* Food menu */}
             <button
               onClick={() => setActiveButton("food")}
-              className={`flex h-10 w-full items-center gap-2 rounded-lg px-4 text-left ${
+              className={`flex h-10 items-center gap-3 rounded-full px-4 text-sm ${
                 activeButton === "food"
                   ? "bg-[#171717] text-white"
-                  : "bg-white text-[#111827]"
+                  : "text-[#111827]"
               }`}
             >
-              <Image src="/4-4.png" alt="Food menu" width={20} height={20} />
-
-              <span className="text-sm font-medium">Food menu</span>
+              <Image src="/4-4.png" alt="" width={18} height={18} />
+              Food menu
             </button>
 
+            {/* Orders */}
             <button
               onClick={() => setActiveButton("orders")}
-              className={`flex h-10 w-full items-center gap-2 rounded-lg px-4 text-left ${
+              className={`flex h-10 items-center gap-3 rounded-full px-4 text-sm ${
                 activeButton === "orders"
                   ? "bg-[#171717] text-white"
-                  : "bg-white text-[#111827]"
+                  : "text-[#111827]"
               }`}
             >
-              <Image src="/Truck.png" alt="Orders" width={20} height={20} />
-
-              <span className="text-sm font-medium">Orders</span>
+              <Image src="/Truck.png" alt="" width={18} height={18} />
+              Orders
             </button>
           </div>
         </aside>
 
-        {/* ================= MAIN ================= */}
-
+        {/* Үндсэн хэсэг */}
         <main className="min-w-0 flex-1">
-          {/* Avatar */}
-
-          <div className="mb-6 flex justify-end">
+          {/* Profile зураг */}
+          <div className="mb-5 flex justify-end">
             <Image src="/Avatar.png" alt="profile" width={38} height={38} />
           </div>
 
-          {/* Orders card */}
+          {/* Food menu */}
+          {activeButton === "food" && (
+            <section>
+              {/* Category хэсэг */}
+              <div className="rounded-[18px] bg-white p-5">
+                <h1 className="mb-4 text-lg font-bold">Dishes category</h1>
 
-          <section className="rounded-[20px] bg-white p-6">
-            {/* Header */}
-
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <h1 className="text-[24px] font-bold text-[#111827]">Orders</h1>
-
-                <p className="text-sm text-gray-400">32 items</p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                {/* Date */}
-
-                <button className="flex h-10 items-center gap-2 rounded-full border border-gray-200 px-4 text-sm text-gray-600">
-                  <span>▣</span>
-                  <span>13 June 2023 - 14 July 2023</span>
-                </button>
-
-                {/* Change delivery state */}
-
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  disabled={selectedOrders.length === 0}
-                  className="flex h-10 items-center gap-2 rounded-full bg-[#171717] px-4 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Change delivery state
-                  {selectedOrders.length > 0 && (
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs text-black">
-                      {selectedOrders.length}
-                    </span>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* ================= TABLE ================= */}
-
-            <div className="overflow-hidden rounded-xl border border-gray-200">
-              {/* Table header */}
-
-              <div className="grid grid-cols-[50px_50px_1.4fr_1fr_1fr_1fr_2fr_1.1fr] items-center border-b border-gray-200 bg-white px-4 py-3 text-xs font-medium text-gray-400">
-                <div>
-                  <input
-                    type="checkbox"
-                    checked={selectedOrders.length === orders.length}
-                    onChange={toggleAllOrders}
-                    className="h-4 w-4"
-                  />
-                </div>
-
-                <div>№</div>
-                <div>Customer</div>
-                <div>Food</div>
-                <div>Date</div>
-                <div>Total</div>
-                <div>Delivery Address</div>
-                <div>Delivery state</div>
-              </div>
-
-              {/* Table rows */}
-
-              {orders.map((order) => (
-                <div
-                  key={order.id}
-                  className={`grid grid-cols-[50px_50px_1.4fr_1fr_1fr_1fr_2fr_1.1fr] items-center border-b border-gray-100 px-4 py-3 text-sm ${
-                    selectedOrders.includes(order.id)
-                      ? "bg-gray-100"
-                      : "bg-white"
-                  }`}
-                >
-                  {/* Checkbox */}
-
-                  <div>
-                    <input
-                      type="checkbox"
-                      checked={selectedOrders.includes(order.id)}
-                      onChange={() => toggleOrder(order.id)}
-                      className="h-4 w-4"
-                    />
-                  </div>
-
-                  {/* Number */}
-
-                  <div className="text-gray-500">{order.id}</div>
-
-                  {/* Customer */}
-
-                  <div className="truncate pr-4 text-gray-600">
-                    {order.customer}
-                  </div>
-
-                  {/* Food */}
-
-                  <div className="text-gray-600">{order.food}</div>
-
-                  {/* Date */}
-
-                  <div className="text-gray-500">{order.date}</div>
-
-                  {/* Total */}
-
-                  <div className="text-gray-600">{order.total}</div>
-
-                  {/* Address */}
-
-                  <div className="pr-6 text-xs leading-4 text-gray-500">
-                    {order.address}
-                  </div>
-
-                  {/* Status */}
-
-                  <div>
-                    <button
-                      className={`rounded-full border px-3 py-1 text-xs font-medium ${
-                        order.status === "Pending"
-                          ? "border-red-300 text-gray-700"
-                          : order.status === "Delivered"
-                            ? "border-green-300 text-gray-700"
-                            : "border-gray-300 text-gray-700"
-                      }`}
-                    >
-                      {order.status} ↕
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* ================= PAGINATION ================= */}
-
-            <div className="mt-6 flex justify-end">
-              <div className="flex items-center gap-2">
-                <button className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400">
-                  ‹
-                </button>
-
-                <button className="flex h-8 w-8 items-center justify-center rounded-full bg-[#171717] text-sm text-white">
-                  1
-                </button>
-
-                {[2, 3, 4, 5].map((page) => (
+                <div className="flex flex-wrap gap-2">
+                  {/* Бүх food */}
                   <button
-                    key={page}
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-sm text-gray-600 hover:bg-gray-100"
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <span className="px-1 text-gray-400">...</span>
-
-                <button className="flex h-8 w-8 items-center justify-center rounded-full text-sm text-gray-600 hover:bg-gray-100">
-                  10
-                </button>
-
-                <button className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400">
-                  ›
-                </button>
-              </div>
-            </div>
-          </section>
-        </main>
-      </div>
-
-      {/* ================= MODAL ================= */}
-
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-          <div className="w-[364px] rounded-xl bg-white p-6 shadow-xl">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-800">
-                Change delivery state
-              </h2>
-
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-500"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="mb-6 flex items-center justify-between rounded-full bg-gray-100 p-1">
-              {(["Delivered", "Pending", "Cancelled"] as Order["status"][]).map(
-                (status) => (
-                  <button
-                    key={status}
-                    onClick={() => setSelectedStatus(status)}
-                    className={`rounded-full px-4 py-2 text-xs ${
-                      selectedStatus === status
-                        ? "bg-white shadow-sm"
-                        : "text-gray-500"
+                    onClick={() => setSelectedCategory("all")}
+                    className={`rounded-full border px-3 py-1.5 text-xs ${
+                      selectedCategory === "all"
+                        ? "border-[#FD543F] text-[#FD543F]"
+                        : "border-gray-200 text-[#171717]"
                     }`}
                   >
-                    {status}
+                    All Dishes
+                    <span className="ml-2 rounded-full bg-black px-1.5 text-[10px] text-white">
+                      {foods.length}
+                    </span>
                   </button>
-                ),
-              )}
-            </div>
 
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="h-10 w-full rounded-full bg-[#171717] text-sm font-medium text-white"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      )}
+                  {/* MongoDB-ээс ирсэн category-ууд */}
+                  {categories.map((category) => (
+                    <button
+                      key={category._id}
+                      onClick={() => setSelectedCategory(category._id)}
+                      className={`rounded-full border px-3 py-1.5 text-xs ${
+                        selectedCategory === category._id
+                          ? "border-[#FD543F] text-[#FD543F]"
+                          : "border-gray-200 text-[#171717]"
+                      }`}
+                    >
+                      {category.categoryName}
+
+                      <span className="ml-2 rounded-full bg-black px-1.5 text-[10px] text-white">
+                        {category.foodCount}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Алдааны мэдээлэл */}
+              {error && (
+                <div className="mt-5 rounded-[18px] bg-red-50 p-5 text-center text-sm text-red-500">
+                  {error}
+                </div>
+              )}
+
+              {/* Food хэсэг */}
+              <div className="mt-5 rounded-[18px] bg-white p-5">
+                {/* Гарчиг */}
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-base font-bold">
+                    {selectedCategoryName} ({filteredFoods.length})
+                  </h2>
+                </div>
+
+                {/* Ачааллаж байгаа үед */}
+                {loading ? (
+                  <div className="py-20 text-center text-gray-400">
+                    Loading foods...
+                  </div>
+                ) : filteredFoods.length === 0 ? (
+                  /* Food байхгүй үед */
+                  <div className="py-20 text-center text-gray-400">
+                    No foods found
+                  </div>
+                ) : (
+                  /* Food card-ууд */
+                  <div className="grid grid-cols-4 gap-4">
+                    {filteredFoods.map((food) => (
+                      <AdminFoodCard key={food._id} food={food} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* Orders */}
+          {activeButton === "orders" && (
+            <section className="rounded-[18px] bg-white p-10">
+              <h1 className="text-lg font-bold">Orders</h1>
+
+              <p className="mt-2 text-sm text-gray-400">Orders page</p>
+            </section>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
