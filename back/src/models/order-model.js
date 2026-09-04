@@ -9,13 +9,15 @@ const foodOrderItemSchema = new schema({
   quantity: Number,
 });
 const OrderSchema = new schema({
-  id: ObjectId,
   user: {
     type: ObjectId,
     ref: "User",
   },
+
   totalprice: Number,
+
   foodOrderItems: [foodOrderItemSchema],
+
   status: {
     type: String,
     enum: ["PENDING", "DELIVERED", "CANCELLED"],
@@ -27,6 +29,11 @@ const OrderSchema = new schema({
     required: true,
     default: Date.now,
   },
+
+  address: {
+    type: String,
+  },
+
   updatedAt: {
     type: Date,
     required: true,

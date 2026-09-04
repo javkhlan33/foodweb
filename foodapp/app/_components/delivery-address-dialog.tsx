@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import {
   Dialog,
   DialogContent,
@@ -11,19 +12,20 @@ import {
 type DeliveryAddressDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onAddressChange: (address: string) => void;
 };
 
 export default function DeliveryAddressDialog({
   open,
   onOpenChange,
+  onAddressChange,
 }: DeliveryAddressDialogProps) {
   const [address, setAddress] = useState("");
 
   const handleSubmit = () => {
     if (!address.trim()) return;
 
-    console.log("Delivery address:", address);
-
+    onAddressChange(address);
     onOpenChange(false);
   };
 
@@ -37,7 +39,6 @@ export default function DeliveryAddressDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-5">
-          {/* Address input */}
           <div className="flex flex-col gap-2">
             <p className="text-[12px] text-[#999999]">
               Please share your complete address
@@ -65,7 +66,6 @@ export default function DeliveryAddressDialog({
             />
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-end gap-3">
             <button
               type="button"

@@ -15,6 +15,11 @@ export const updateFood = async (req, res) => {
       },
       { new: true },
     );
+    if (!updatedFood) {
+      return res.status(404).json({
+        message: "Food олдсонгүй",
+      });
+    }
     res.status(200).json({
       message: "amjilttai food  update hiilee",
       food: updatedFood,

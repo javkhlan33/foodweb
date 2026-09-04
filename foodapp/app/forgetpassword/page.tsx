@@ -22,7 +22,7 @@ export default function ForgetPasswordPage() {
 
   const handleResetPassword = () => {
     alert("Нууц үг амжилттай шинэчлэгдлээ.");
-    router.push("/login");
+    router.push("/user/login");
   };
 
   return (

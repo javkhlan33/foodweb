@@ -27,6 +27,7 @@ export default function PasswordPage({
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  
 
   const handleSubmit = () => {
     let valid = true;
@@ -50,7 +51,7 @@ export default function PasswordPage({
 
     if (valid) {
       onSubmit();
-      router.push("/login");
+      router.push("/user/login");
     }
   };
 
@@ -143,7 +144,7 @@ export default function PasswordPage({
                   Already have an account?{" "}
                 </span>
 
-                <Link href="/login" className="font-medium text-[#2563EB]">
+                <Link href="/user/login" className="font-medium text-[#2563EB]">
                   Log in
                 </Link>
               </div>

@@ -2,24 +2,46 @@ import orderModel from "../../models/order-model.js";
 
 export const updateOrder = async (req, res) => {
   try {
+    const { id, status } = req.body;
+
+    if (!id || !status) {
+      return res.status(400).json({
+        message: "id болон status хэрэгтэй",
+      });
+    }
+
+    if (!["PENDING", "DELIVERED", "CANCELLED"].includes(status)) {
+      return res.status(400).json({
+        message: "Буруу status",
+      });
+    }
+
     const updatedOrder = await orderModel.findByIdAndUpdate(
-      req.body.id,
+      id,
       {
-        foodName: req.body.foodName,
-        price: req.body.price,
-        image: req.body.image,
-        ingredients: req.body.ingredients,
-        category: req.body.category,
+        status,
+        updatedAt: new Date(),
       },
-      { new: true },
+      {
+        new: true,
+      },
     );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        message: "Order олдсонгүй",
+      });
+    }
+
     res.status(200).json({
-      message: "amjilttai order  update hiilee",
+      message: "Order status амжилттай шинэчлэгдлээ",
       order: updatedOrder,
     });
   } catch (error) {
+    console.error("Order update error:", error);
+
     res.status(500).json({
-      message: "order update hiihed aldaa garlaa",
+      message: "Order update хийхэд алдаа гарлаа",
     });
   }
 };
