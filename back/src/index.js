@@ -10,7 +10,6 @@ import dns from "node:dns";
 
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
-const port = process.env.PORT || 8000;
 const app = express();
 
 app.use(express.json());
@@ -25,38 +24,15 @@ app.use("/food", foodRouter);
 app.use("/user", userRouter);
 app.use("/order", orderRouter);
 
-let isConnected = false;
 
-async function connectDB() {
-  if (isConnected) return;
-  if (!process.env.MONGODB_URI) {
-    throw new Error("MONGODB_URI is missing");
-  }
-  await mongoose.connect(process.env.MONGODB_URI);
-  isConnected = true;
-  console.log("Connected");
-}
+await mongoose.connect(process.env.MONGODB_URI);
 
-app.use(async (_req, _res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
 
 if (!process.env.VERCEL) {
-  connectDB()
-    .then(() => {
+  const port = 8000;
       app.listen(port, () => {
         console.log(`Server is running on port http://localhost:${port}`);
       });
-    })
-    .catch((error) => {
-      console.error("MongoDB connection error:", error);
-      process.exit(1);
-    });
 }
 
 export default app;
