@@ -7,6 +7,7 @@ import FoodSection from "./_components/food-section";
 import AddFoodModal from "./_components/add-food-modal";
 import AddCategoryModal from "./_components/add-category-modal";
 import EditFoodModal from "./_components/edit-food-modal";
+import { API_URL } from "@/lib/auth";
 type Category = {
   _id: string;
   categoryName: string;
@@ -51,7 +52,7 @@ export default function AdminPage() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch("http://localhost:8000/food", {
+      const response = await fetch(`${API_URL}/food`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -81,8 +82,8 @@ export default function AdminPage() {
       setLoading(true);
 
       const [categoryResponse, foodResponse] = await Promise.all([
-        fetch("http://localhost:8000/category"),
-        fetch("http://localhost:8000/food"),
+        fetch(`${API_URL}/category`),
+        fetch(`${API_URL}/food`),
       ]);
 
       if (!categoryResponse.ok || !foodResponse.ok) {

@@ -9,6 +9,7 @@ import CartSheet from "./_components/cart-sheet";
 import CartAlert from "./_components/cart-alert";
 import FoodSection from "./_components/foodsection";
 import FoodDetailDialog from "./_components/food-detail-dialog";
+import { API_URL } from "@/lib/auth";
 
 export type Food = {
   _id: string;
@@ -60,8 +61,8 @@ export default function Home() {
         setLoading(true);
 
         const [foodResponse, categoryResponse] = await Promise.all([
-          fetch("http://localhost:8000/food"),
-          fetch("http://localhost:8000/category"),
+          fetch(`${API_URL}/food`),
+          fetch(`${API_URL}/category`),
         ]);
 
         if (!foodResponse.ok || !categoryResponse.ok) {

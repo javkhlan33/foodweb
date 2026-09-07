@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_URL } from "@/lib/auth";
 
 type Props = {
   open: boolean;
@@ -20,7 +21,7 @@ export default function AddCategoryModal({ open, onClose, onSuccess }: Props) {
     try {
       setSaving(true);
 
-      const response = await fetch("http://localhost:8000/category", {
+      const response = await fetch(`${API_URL}/category`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

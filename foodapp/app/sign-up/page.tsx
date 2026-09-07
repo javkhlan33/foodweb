@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import SignupPage from "./_components/email";
 import PasswordPage from "./_components/password";
+import { API_URL } from "@/lib/auth";
 
 export default function Page() {
   const [step, setStep] = useState(1);
@@ -12,7 +13,7 @@ export default function Page() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSignup = async () => {
-    const response = await fetch("http://localhost:8000/user", {
+    const response = await fetch(`${API_URL}/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/auth";
 
 type Category = {
   _id: string;
@@ -166,7 +167,7 @@ export default function EditFoodModal({
     try {
       setSaving(true);
 
-      const response = await fetch("http://localhost:8000/food", {
+      const response = await fetch(`${API_URL}/food`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

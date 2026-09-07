@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_URL } from "@/lib/auth";
 
 type Category = {
   _id: string;
@@ -94,7 +95,7 @@ export default function AddFoodModal({
     try {
       setSaving(true);
 
-      const response = await fetch("http://localhost:8000/food", {
+      const response = await fetch(`${API_URL}/food`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { getAuth } from "@/lib/auth";
+import { getAuth, API_URL } from "@/lib/auth";
 
 type FoodOrderItem = {
   foodId?: {
@@ -68,7 +68,7 @@ export default function OrdersTable() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("http://localhost:8000/order");
+      const response = await fetch(`${API_URL}/order`);
 
       if (!response.ok) {
         throw new Error("Orders авахад алдаа гарлаа");
@@ -150,7 +150,7 @@ export default function OrdersTable() {
 
       await Promise.all(
         selectedOrders.map(async (orderId) => {
-          const response = await fetch("http://localhost:8000/order", {
+          const response = await fetch(`${API_URL}/order`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: orderId, status: selectedStatus }),
