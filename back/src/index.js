@@ -19,7 +19,11 @@ app.use("/food", foodRouter);
 app.use("/user", userRouter);
 app.use("/order", orderRouter);
 
-mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected"));
-app.listen(port, () => {
-  console.log(`Server is running on port http://localhost:${port}`);
-});
+await mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected"));
+if (!process.env.VERCEL){
+  app.listen(port, () => {
+    console.log(`Server is running on port http://localhost:${port}`);
+  });
+}
+
+
