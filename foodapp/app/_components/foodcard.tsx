@@ -1,93 +1,95 @@
 "use client";
 
 import Image from "next/image";
-import { Plus, Check } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Check, Plus } from "lucide-react";
+import type { Food } from "../page";
 
-type foodType = {
-  image: string;
-  title: string;
-  description: string;
-  price: number;
+type Props = {
+  food: Food;
+  onAddToCart: (food: Food, quantity: number) => void;
+  isAdded: boolean;
+  onFoodClick: (food: Food) => void;
 };
 
-interface FoodCardProps extends foodType {
-  onAddToCart: () => void;
-}
-
 export default function FoodCard({
-  image,
-  title,
-  description,
-  price,
+  food,
   onAddToCart,
-}: FoodCardProps) {
-  const [isSelected, setIsSelected] = useState(false);
-  const [foods, setfoods] = useState<foodType[]>([]);
-  const getCategory = async () => {
-    const response = await fetch("http://localhost:8000/food");
-    const foodData = await response.json();
-    setfoods(foodData.results);
+  isAdded,
+  onFoodClick,
+}: Props) {
+  const handleAdd = (e: React.MouseEvent) => {
+    // Card-ийн click event рүү дамжуулахгүй
+    e.stopPropagation();
 
-    console.log(foodData);
+    // + дарахад шууд cart-д нэмэхгүй
+    // Эхлээд Food Detail Dialog нээнэ
+    onFoodClick(food);
   };
-  useEffect(() => {
-    getCategory();
-  }, []);
 
   return (
-    <div className="w-[400px]  rounded-[20px] bg-white p-4">
-      {/* Image */}
-      <div className="relative">
+    <div
+      onClick={() => onFoodClick(food)}
+      className="
+        cursor-pointer
+        overflow-hidden
+        rounded-[16px]
+        bg-white
+        p-4
+        transition
+        hover:shadow-lg
+      "
+    >
+      {/* IMAGE */}
+      <div className="relative h-[220px] overflow-hidden rounded-[12px]">
         <Image
-          src={image}
-          alt={title}
-          width={365}
-          height={246}
-          className="h-full w-full rounded-[12px] bottom-[116px] right-4 object-cover"
+          src={food.image}
+          alt={food.foodName}
+          fill
+          className="object-cover"
         />
 
+        {/* PLUS / CHECK */}
         <button
-          className={`
+          type="button"
+          onClick={handleAdd}
+          className="
             absolute
-            bottom-4
-            right-4
+            bottom-3
+            right-3
             flex
             h-10
             w-10
             items-center
             justify-center
             rounded-full
+            bg-white
             shadow-md
-            ${isSelected ? "bg-[#171717]" : "bg-white"}
-          `}
-          onClick={() => {
-            setIsSelected(!isSelected);
-            onAddToCart();
-          }}
+            transition
+            hover:scale-105
+          "
         >
-          {isSelected ? (
-            <Check size={18} className="text-[#FD543F]" />
+          {isAdded ? (
+            <Check size={20} strokeWidth={3} className="text-green-500" />
           ) : (
-            <Plus size={18} className="text-[#FD543F]" />
+            <Plus size={21} className="text-[#FD543F]" />
           )}
         </button>
       </div>
 
-      {/* Info */}
-      <div className="mt-5 w-full flex  flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <h3 className="text-[24px] w-full text-[#FD543F]">
-            {title}
+      {/* INFO */}
+      <div className="mt-3">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="truncate text-[18px] text-[#FD543F]">
+            {food.foodName}
           </h3>
 
-          <p className="text-[18px] font-bold text-[#171717]">
-            ${price.toFixed(2)}
-          </p>
+          <span className="shrink-0 text-[14px] font-semibold text-[#171717]">
+            ${Number(food.price).toFixed(2)}
+          </span>
         </div>
 
-        <p className="text-[14px] w-full leading-5 text-[#171717]">
-          {description}
+        <p className="mt-2 line-clamp-2 text-[12px] leading-5 text-[#52525B]">
+          {food.ingredients}
         </p>
       </div>
     </div>

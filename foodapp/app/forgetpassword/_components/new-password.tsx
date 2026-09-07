@@ -140,7 +140,7 @@ export default function NewPassword({
                   Already have an account?{" "}
                 </span>
 
-                <Link href="/login" className="font-medium text-[#2563EB]">
+                <Link href="/user/login" className="font-medium text-[#2563EB]">
                   Log in
                 </Link>
               </div>

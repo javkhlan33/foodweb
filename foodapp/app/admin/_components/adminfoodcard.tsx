@@ -6,31 +6,31 @@ type Food = {
   price: number;
   ingredients: string;
   image: string;
-  categoryId?: string;
-  categoryName?: string;
 };
 
-type AdminFoodCardProps = {
+type Props = {
   food: Food;
+  onEdit: (food: Food) => void;
+  onDelete: (id: string) => void;
 };
 
-export default function AdminFoodCard({ food }: AdminFoodCardProps) {
+export default function AdminFoodCard({ food, onEdit, onDelete }: Props) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       {/* IMAGE */}
-      <div className="relative">
+      <div className="relative h-[160px]">
         <Image
           src={food.image}
           alt={food.foodName}
-          width={300}
-          height={150}
-          className="h-[150px] w-full object-cover"
+          fill
+          className="object-cover"
         />
 
         {/* EDIT BUTTON */}
         <button
           type="button"
-          className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#FD543F] shadow"
+          onClick={() => onEdit(food)}
+          className="absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#FD543F] shadow"
         >
           ✎
         </button>
@@ -51,6 +51,15 @@ export default function AdminFoodCard({ food }: AdminFoodCardProps) {
         <p className="mt-1 line-clamp-2 text-xs leading-4 text-gray-500">
           {food.ingredients}
         </p>
+
+        {/* DELETE BUTTON */}
+        <button
+          type="button"
+          onClick={() => onDelete(food._id)}
+          className="mt-3 w-full rounded-lg border border-red-200 py-2 text-xs text-red-500 hover:bg-red-50"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
