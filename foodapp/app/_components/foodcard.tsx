@@ -40,7 +40,7 @@ export default function FoodCard({
       "
     >
       {/* IMAGE */}
-      <div className="relative h-[220px] overflow-hidden rounded-[12px]">
+      <div className="relative h-[180px] overflow-hidden rounded-[12px] sm:h-[220px]">
         <Image
           src={food.image}
           alt={food.foodName}
@@ -79,7 +79,7 @@ export default function FoodCard({
       {/* INFO */}
       <div className="mt-3">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="truncate text-[18px] text-[#FD543F]">
+          <h3 className="truncate text-[16px] text-[#FD543F] sm:text-[18px]">
             {food.foodName}
           </h3>
 

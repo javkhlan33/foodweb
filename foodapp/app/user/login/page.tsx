@@ -54,13 +54,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="flex w-[1440px] rounded-2xl border border-[#E4E4E7] bg-white">
+    <div className="flex min-h-screen items-center justify-center bg-white p-4 sm:p-6">
+      <div className="flex w-full max-w-[1440px] overflow-hidden rounded-2xl border border-[#E4E4E7] bg-white">
         {/* Left */}
-        <div className="relative flex-1">
-          <div className="absolute left-[100px] top-[246px] w-[416px]">
+        <div className="flex w-full flex-1 items-center justify-center px-4 py-10 sm:px-10 lg:px-16 lg:py-16">
+          <div className="w-full max-w-[416px]">
             <div className="flex flex-col gap-6">
-              {/* Back */}
               <Link
                 href="/"
                 className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E4E4E7]"
@@ -68,18 +67,16 @@ export default function LoginPage() {
                 <ChevronLeft className="h-4 w-4 text-[#18181B]" />
               </Link>
 
-              {/* Header */}
               <div className="flex flex-col gap-2">
-                <h1 className="text-[36px] font-semibold text-[#18181B]">
+                <h1 className="text-[28px] font-semibold text-[#18181B] sm:text-[36px]">
                   Log in
                 </h1>
 
-                <p className="text-base text-[#71717A]">
+                <p className="text-sm text-[#71717A] sm:text-base">
                   Log in to enjoy your favorite dishes.
                 </p>
               </div>
 
-              {/* Inputs */}
               <div className="flex flex-col gap-4">
                 <div>
                   <input
@@ -121,7 +118,6 @@ export default function LoginPage() {
                 </Link>
               </div>
 
-              {/* Button */}
               <button
                 onClick={handleLogin}
                 disabled={!isFormValid}
@@ -131,13 +127,11 @@ export default function LoginPage() {
                     : "bg-[#E4E4E7] text-[#A1A1AA]"
                 }`}
               >
-                Let's Go
+                Let&apos;s Go
               </button>
 
-              {/* Footer */}
               <div className="text-center text-sm">
-                <span className="text-[#71717A]">Don't have an account? </span>
-
+                <span className="text-[#71717A]">Don&apos;t have an account? </span>
                 <Link href="/sign-up" className="font-medium text-[#2563EB]">
                   Sign up
                 </Link>
@@ -146,17 +140,14 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Gap */}
-        <div className="w-[48px]" />
-
-        {/* Right */}
-        <div className="p-5 mt-2">
+        {/* Right image - desktop only */}
+        <div className="hidden shrink-0 p-5 lg:block">
           <Image
             src="/login.png"
             alt="Login"
             width={856}
             height={864}
-            className="h-[904px] w-[856px] rounded-2xl object-cover"
+            className="h-auto max-h-[904px] w-[min(42vw,856px)] rounded-2xl object-cover"
           />
         </div>
       </div>

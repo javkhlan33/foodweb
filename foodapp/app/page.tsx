@@ -194,7 +194,7 @@ export default function Home() {
       <main className="mx-auto w-full max-w-[1440px]">
         <Hero />
 
-        <section className="w-full bg-[#404040] px-20 py-16">
+        <section className="w-full bg-[#404040] px-4 py-8 sm:px-8 sm:py-12 lg:px-20 lg:py-16">
           {loading ? (
             <div className="py-20 text-center text-white">Loading...</div>
           ) : (

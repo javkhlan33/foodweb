@@ -207,14 +207,15 @@ export default function CartSheet({
     z-50
     flex
     h-screen
-    w-[535px]
+    w-full
     max-w-[100vw]
     flex-col
     bg-[#404040]
     shadow-2xl
+    sm:w-[535px]
   "
       >
-        <div className="flex h-[72px] shrink-0 items-center justify-between px-6">
+        <div className="flex h-[72px] shrink-0 items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3 text-white">
             <ShoppingCart size={21} />
             <span className="text-[16px] font-medium">Order detail</span>
@@ -229,7 +230,7 @@ export default function CartSheet({
           </button>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col px-6 pb-6">
+        <div className="flex min-h-0 flex-1 flex-col px-4 pb-6 sm:px-6">
           <div className="mb-4 flex h-10 shrink-0 rounded-full bg-white p-1">
             <button
               type="button"

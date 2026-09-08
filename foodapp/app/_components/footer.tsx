@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 const texts = Array.from({ length: 20 }, () => "Fresh fast delivered");
+
 export default function Footer() {
   return (
-    <footer className="w-full ">
+    <footer className="w-full overflow-hidden">
       {/* Top Strip */}
       <div className="h-[52px] overflow-hidden bg-[#FD543F]">
         <div className="marquee h-full items-center">
@@ -21,11 +23,11 @@ export default function Footer() {
       </div>
 
       {/* Main Footer */}
-      <div className="bg-[#171717] ">
-        <div className="mx-auto flex justify-between max-w-[1260px] gap-55 px-16 py-16">
+      <div className="bg-[#171717]">
+        <div className="mx-auto flex max-w-[1260px] flex-col gap-10 px-4 py-10 sm:px-8 sm:py-14 lg:flex-row lg:justify-between lg:gap-16 lg:px-16 lg:py-16">
           {/* Logo */}
-          <div className="top-0 right-0 w-[88px] flex flex-col gap-4">
-            <div className="w-full flex justify-center ">
+          <div className="flex w-[88px] flex-col gap-4">
+            <div className="flex w-full justify-center">
               <Image src="/logo.png" alt="logo" width={38} height={45} />
             </div>
 
@@ -40,21 +42,20 @@ export default function Footer() {
               </p>
             </div>
           </div>
-          <div className="flex w-full justify-between">
+
+          <div className="flex w-full flex-col gap-10 sm:flex-row sm:justify-between sm:gap-8">
             {/* Company */}
-            <div className="left-0  ">
-              <h3 className="mb-4 text-xl  font-semibold gap-4 text-gray-500">
+            <div>
+              <h3 className="mb-4 text-xl font-semibold text-gray-500">
                 NomNom
               </h3>
-              <div className="flex flex-col gap-4 ">
+              <div className="flex flex-col gap-4">
                 <Link href="/" className="block text-sm text-white">
                   Home
                 </Link>
-
                 <Link href="/" className="block text-sm text-white">
                   Contact us
                 </Link>
-
                 <Link href="/" className="block text-sm text-white">
                   Delivery zone
                 </Link>
@@ -62,17 +63,17 @@ export default function Footer() {
             </div>
 
             {/* Menu */}
-            <div className=" right-[234px]">
+            <div>
               <h3 className="mb-4 text-xl font-semibold text-gray-500">Menu</h3>
-              <div className="w-full flex gap-14 ">
-                <div className="flex flex-col gap-4 ">
+              <div className="flex gap-10 sm:gap-14">
+                <div className="flex flex-col gap-4 text-sm text-white">
                   <Link href="/">Appetizers</Link>
                   <Link href="/">Salads</Link>
                   <Link href="/">Pizzas</Link>
                   <Link href="/">Main dishes</Link>
                   <Link href="/">Desserts</Link>
                 </div>
-                <div className="flex flex-col gap-4 ">
+                <div className="flex flex-col gap-4 text-sm text-white">
                   <Link href="/">Side dish</Link>
                   <Link href="/">Brunch</Link>
                   <Link href="/">Desserts</Link>
@@ -83,8 +84,8 @@ export default function Footer() {
             </div>
 
             {/* Social */}
-            <div className="right-0  ">
-              <h3 className="mb-4 w-[122px] text-xl font-semibold text-gray-500">
+            <div>
+              <h3 className="mb-4 text-xl font-semibold text-gray-500">
                 Follow us
               </h3>
 
@@ -112,13 +113,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mx-auto flex max-w-[1260px] items-center gap-12 border-t border-[#2D2D2D] px-16 py-6">
-          <div className="flex gap-8 text-[14px] text-gray-500">
-            <p>Copyright ©2024 NomNom LLC</p>
-            <Link href="/">Privacy policy</Link>
-            <Link href="/">Terms and condition</Link>
-            <Link href="/">Cookie policy</Link>
-          </div>
+        <div className="mx-auto flex max-w-[1260px] flex-col gap-3 border-t border-[#2D2D2D] px-4 py-6 text-[13px] text-gray-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8 sm:px-8 sm:text-[14px] lg:px-16">
+          <p>Copyright ©2024 NomNom LLC</p>
+          <Link href="/">Privacy policy</Link>
+          <Link href="/">Terms and condition</Link>
+          <Link href="/">Cookie policy</Link>
         </div>
       </div>
     </footer>

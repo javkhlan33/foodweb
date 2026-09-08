@@ -20,7 +20,6 @@ export default function FoodDetailDialog({
 }: Props) {
   const [quantity, setQuantity] = useState(1);
 
-  // Dialog шинээр нээгдэх болгонд quantity 1 болгоно
   useEffect(() => {
     if (open) {
       setQuantity(1);
@@ -39,28 +38,25 @@ export default function FoodDetailDialog({
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-black/40 px-4 ${
+      className={`fixed inset-0 z-[100] items-center justify-center bg-black/40 px-3 sm:px-4 ${
         open ? "flex" : "hidden"
       }`}
       onClick={() => onOpenChange(false)}
     >
       <div
-        className="relative w-full max-w-[826px] overflow-hidden rounded-[20px] bg-white p-4 shadow-2xl"
+        className="relative max-h-[90vh] w-full max-w-[826px] overflow-y-auto rounded-[20px] bg-white p-3 shadow-2xl sm:p-4"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* CLOSE */}
         <button
           type="button"
           onClick={() => onOpenChange(false)}
-          className="absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#71717A] shadow-sm hover:bg-[#F4F4F5]"
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#71717A] shadow-sm hover:bg-[#F4F4F5] sm:right-5 sm:top-5"
         >
           <X size={16} />
         </button>
 
-        {/* CONTENT */}
-        <div className="grid grid-cols-[1fr_1fr] gap-5">
-          {/* IMAGE */}
-          <div className="relative h-[380px] overflow-hidden rounded-[14px]">
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
+          <div className="relative h-[220px] overflow-hidden rounded-[14px] sm:h-[280px] md:h-[380px]">
             <Image
               src={food.image}
               alt={food.foodName}
@@ -69,35 +65,28 @@ export default function FoodDetailDialog({
             />
           </div>
 
-          {/* INFO */}
-          <div className="flex flex-col justify-between py-4">
+          <div className="flex flex-col justify-between py-2 sm:py-4">
             <div>
-              {/* TITLE */}
-              <h2 className="text-[24px] font-medium text-[#FD543F]">
+              <h2 className="pr-8 text-[20px] font-medium text-[#FD543F] sm:text-[24px]">
                 {food.foodName}
               </h2>
 
-              {/* INGREDIENTS */}
-              <p className="mt-3 text-[14px] leading-5 text-[#171717]">
+              <p className="mt-3 text-[13px] leading-5 text-[#171717] sm:text-[14px]">
                 {food.ingredients}
               </p>
             </div>
 
             <div>
-              {/* LINE */}
-              <div className="my-6 border-t border-[#E4E4E7]" />
+              <div className="my-4 border-t border-[#E4E4E7] sm:my-6" />
 
-              {/* PRICE + QUANTITY */}
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[12px] text-[#71717A]">Total price</p>
-
                   <p className="mt-1 text-[18px] font-semibold text-[#171717]">
                     ${total.toFixed(2)}
                   </p>
                 </div>
 
-                {/* QUANTITY */}
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
@@ -121,7 +110,6 @@ export default function FoodDetailDialog({
                 </div>
               </div>
 
-              {/* ADD TO CART */}
               <button
                 type="button"
                 onClick={handleAdd}

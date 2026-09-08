@@ -27,7 +27,6 @@ export default function PasswordPage({
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  
 
   const handleSubmit = () => {
     let valid = true;
@@ -56,13 +55,11 @@ export default function PasswordPage({
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="flex w-[1440px] rounded-2xl bg-white">
-        {/* Left */}
-        <div className="relative flex-1">
-          <div className="absolute left-[100px] top-[246px] w-[416px]">
+    <div className="flex min-h-screen items-center justify-center bg-white p-4 sm:p-6">
+      <div className="flex w-full max-w-[1440px] overflow-hidden rounded-2xl bg-white">
+        <div className="flex w-full flex-1 items-center justify-center px-4 py-10 sm:px-10 lg:px-16 lg:py-16">
+          <div className="w-full max-w-[416px]">
             <div className="flex flex-col gap-6">
-              {/* Back */}
               <button
                 onClick={onBack}
                 className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E4E4E7]"
@@ -70,25 +67,23 @@ export default function PasswordPage({
                 <ChevronLeft className="h-4 w-4 text-[#18181B]" />
               </button>
 
-              {/* Header */}
               <div className="flex flex-col gap-2">
-                <h1 className="text-[36px] font-semibold text-[#18181B]">
+                <h1 className="text-[28px] font-semibold text-[#18181B] sm:text-[36px]">
                   Create a strong password
                 </h1>
 
-                <p className="text-base text-[#71717A]">
+                <p className="text-sm text-[#71717A] sm:text-base">
                   Create a strong password with letters, numbers.
                 </p>
               </div>
 
-              {/* Password */}
               <div className="flex flex-col gap-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className={`h-11 rounded-md border px-3 outline-none text-black ${
+                  className={`h-11 rounded-md border px-3 text-black outline-none ${
                     passwordError ? "border-red-500" : "border-gray-300"
                   }`}
                 />
@@ -98,14 +93,13 @@ export default function PasswordPage({
                 )}
               </div>
 
-              {/* Confirm Password */}
               <div className="flex flex-col gap-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm Password"
-                  className={`h-11 rounded-md border px-3 outline-none text-black ${
+                  className={`h-11 rounded-md border px-3 text-black outline-none ${
                     confirmPasswordError ? "border-red-500" : "border-gray-300"
                   }`}
                 />
@@ -115,7 +109,6 @@ export default function PasswordPage({
                 )}
               </div>
 
-              {/* Show password */}
               <label className="flex items-center gap-2 text-sm text-[#71717A]">
                 <input
                   type="checkbox"
@@ -125,7 +118,6 @@ export default function PasswordPage({
                 Show password
               </label>
 
-              {/* Button */}
               <button
                 onClick={handleSubmit}
                 disabled={!password || !confirmPassword}
@@ -135,10 +127,9 @@ export default function PasswordPage({
                     : "bg-[#E4E4E7] text-[#A1A1AA]"
                 }`}
               >
-                Let's Go
+                Let&apos;s Go
               </button>
 
-              {/* Footer */}
               <div className="text-center text-sm">
                 <span className="text-[#71717A]">
                   Already have an account?{" "}
@@ -152,16 +143,13 @@ export default function PasswordPage({
           </div>
         </div>
 
-        {/* Right */}
-        <div className="w-[48px]" />
-
-        <div className="mt-2 p-5">
+        <div className="mt-2 hidden shrink-0 p-5 lg:block">
           <Image
             src="/login.png"
             alt="Signup"
             width={856}
             height={904}
-            className="rounded-2xl object-cover"
+            className="h-auto max-h-[904px] w-[min(42vw,856px)] rounded-2xl object-cover"
           />
         </div>
       </div>

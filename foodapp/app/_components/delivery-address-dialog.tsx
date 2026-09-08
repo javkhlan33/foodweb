@@ -31,7 +31,7 @@ export default function DeliveryAddressDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[502px] rounded-[8px] p-6">
+      <DialogContent className="w-[calc(100%-2rem)] max-w-[502px] rounded-[8px] p-6">
         <DialogHeader>
           <DialogTitle className="text-[18px] font-bold text-[#171717]">
             Please write your delivery address!

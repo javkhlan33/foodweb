@@ -30,36 +30,35 @@ export default function SignupPage({ email, setEmail, onNext }: EmailProps) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="flex w-[1440px] rounded-2xl bg-white">
-        {/* Left */}
-        <div className="relative flex-1">
-          <div className="absolute left-[100px] top-[246px] w-[416px]">
+    <div className="flex min-h-screen items-center justify-center bg-white p-4 sm:p-6">
+      <div className="flex w-full max-w-[1440px] overflow-hidden rounded-2xl bg-white">
+        <div className="flex w-full flex-1 items-center justify-center px-4 py-10 sm:px-10 lg:px-16 lg:py-16">
+          <div className="w-full max-w-[416px]">
             <div className="flex flex-col gap-6">
-              {/* Back */}
-              <button className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E4E4E7]">
+              <Link
+                href="/"
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E4E4E7]"
+              >
                 <ChevronLeft className="h-4 w-4 text-[#18181B]" />
-              </button>
+              </Link>
 
-              {/* Header */}
               <div className="flex flex-col gap-2">
-                <h1 className="text-[36px] font-semibold text-[#18181B]">
+                <h1 className="text-[28px] font-semibold text-[#18181B] sm:text-[36px]">
                   Create your account
                 </h1>
 
-                <p className="text-base text-[#71717A]">
+                <p className="text-sm text-[#71717A] sm:text-base">
                   Sign up to explore your favorite dishes.
                 </p>
               </div>
 
-              {/* Email */}
               <div className="flex flex-col gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className={`h-11 rounded-md border px-3 outline-none text-black ${
+                  className={`h-11 rounded-md border px-3 text-black outline-none ${
                     emailError ? "border-red-500" : "border-gray-300"
                   }`}
                 />
@@ -69,7 +68,6 @@ export default function SignupPage({ email, setEmail, onNext }: EmailProps) {
                 )}
               </div>
 
-              {/* Button */}
               <button
                 onClick={handleNext}
                 disabled={!isFormValid}
@@ -79,10 +77,9 @@ export default function SignupPage({ email, setEmail, onNext }: EmailProps) {
                     : "bg-[#E4E4E7] text-[#A1A1AA]"
                 }`}
               >
-                Let's Go
+                Let&apos;s Go
               </button>
 
-              {/* Footer */}
               <div className="text-center text-sm">
                 <span className="text-[#71717A]">
                   Already have an account?{" "}
@@ -96,17 +93,13 @@ export default function SignupPage({ email, setEmail, onNext }: EmailProps) {
           </div>
         </div>
 
-        {/* Gap */}
-        <div className="w-[48px]" />
-
-        {/* Right */}
-        <div className="mt-2 p-5">
+        <div className="mt-2 hidden shrink-0 p-5 lg:block">
           <Image
             src="/login.png"
             alt="Signup"
             width={856}
             height={904}
-            className="rounded-2xl object-cover"
+            className="h-auto max-h-[904px] w-[min(42vw,856px)] rounded-2xl object-cover"
           />
         </div>
       </div>

@@ -9,9 +9,9 @@ export default function OrderSuccessDialog({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/30">
-      <div className="flex h-[439px] w-[664px] flex-col items-center justify-center rounded-[16px] bg-white shadow-2xl">
-        <h2 className="text-center text-[16px] font-semibold text-[#18181B]">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/30 px-4">
+      <div className="flex min-h-[320px] w-full max-w-[664px] flex-col items-center justify-center rounded-[16px] bg-white px-4 py-10 shadow-2xl sm:min-h-[439px] sm:py-0">
+        <h2 className="text-center text-[15px] font-semibold text-[#18181B] sm:text-[16px]">
           Your order has been successfully placed!
         </h2>
 
@@ -19,7 +19,7 @@ export default function OrderSuccessDialog({ open, onClose }: Props) {
           🍽️
         </div>
 
-        <div className="mt-5 text-[55px]">🧑🏽‍🍳</div>
+        <div className="mt-5 text-[40px] sm:text-[55px]">🧑‍🍳</div>
 
         <button
           type="button"

@@ -60,83 +60,60 @@ export default function Header({
   return (
     <>
       <header className="w-full border-b border-gray-800 bg-[#171717]">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-2 px-4 sm:h-16 sm:gap-4 sm:px-6">
           {/* Left */}
-          <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="NomNom Logo" width={40} height={40} />
+          <div className="flex min-w-0 items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="NomNom Logo"
+              width={40}
+              height={40}
+              className="h-8 w-8 shrink-0 sm:h-10 sm:w-10"
+            />
 
             <div className="leading-none">
-              <h1 className="text-xl font-bold text-red-500">NomNom</h1>
-
-              <p className="text-xs text-gray-300">Swift delivery</p>
+              <h1 className="text-lg font-bold text-red-500 sm:text-xl">
+                NomNom
+              </h1>
+              <p className="hidden text-xs text-gray-300 sm:block">
+                Swift delivery
+              </p>
             </div>
           </div>
 
           {/* Right */}
-          <div className="flex items-center gap-4">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4">
             {/* Address */}
             <button
               onClick={() => setAddressOpen(true)}
-              className="
-                flex
-                h-10
-                items-center
-                gap-2
-                rounded-full
-                bg-white
-                px-4
-              "
+              className="flex h-9 max-w-[140px] items-center gap-1.5 rounded-full bg-white px-3 sm:h-10 sm:max-w-none sm:gap-2 sm:px-4"
             >
-              <MapPin size={16} className="text-red-500" />
+              <MapPin size={16} className="shrink-0 text-red-500" />
 
-              <span className="text-sm">
-                <span className="font-medium text-red-500">
-                  Delivery address:
-                </span>{" "}
+              <span className="truncate text-xs sm:text-sm">
+                <span className="hidden font-medium text-red-500 md:inline">
+                  Delivery address:{" "}
+                </span>
                 <span className="text-gray-500">
-                  {address || "Add Location"}
+                  {address || "Location"}
                 </span>
               </span>
 
-              <ChevronRight size={16} className="text-gray-400" />
+              <ChevronRight
+                size={16}
+                className="hidden shrink-0 text-gray-400 sm:block"
+              />
             </button>
 
             {/* Cart */}
             <button
               onClick={onCartClick}
-              className="
-                relative
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-                rounded-full
-                bg-white
-                hover:bg-gray-100
-              "
+              className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white hover:bg-gray-100 sm:h-10 sm:w-10"
             >
               <ShoppingCart size={18} />
 
               {cartCount > 0 && (
-                <span
-                  className="
-                    absolute
-                    -right-1
-                    -top-1
-                    flex
-                    h-5
-                    min-w-5
-                    items-center
-                    justify-center
-                    rounded-full
-                    bg-[#FD543F]
-                    px-1
-                    text-[11px]
-                    font-bold
-                    text-white
-                  "
-                >
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FD543F] px-1 text-[11px] font-bold text-white">
                   {cartCount}
                 </span>
               )}
@@ -147,17 +124,7 @@ export default function Header({
               <button
                 type="button"
                 onClick={() => setMenuOpen((open) => !open)}
-                className="
-                  flex
-                  h-10
-                  w-10
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-red-500
-                  text-white
-                  hover:bg-red-600
-                "
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 sm:h-10 sm:w-10"
               >
                 {isLoggedIn && email ? (
                   <span className="text-sm font-semibold uppercase">

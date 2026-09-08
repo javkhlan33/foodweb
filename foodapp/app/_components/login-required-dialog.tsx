@@ -11,8 +11,8 @@ export default function LoginRequiredDialog({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/30">
-      <div className="relative w-[429px] rounded-[12px] bg-white p-6 shadow-2xl">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/30 px-4">
+      <div className="relative w-full max-w-[429px] rounded-[12px] bg-white p-6 shadow-2xl">
         <button
           type="button"
           onClick={onClose}
