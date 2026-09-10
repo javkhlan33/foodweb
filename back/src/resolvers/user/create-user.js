@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import userModel from "../../models/user-model.js";
 
 export const createUser = async (req, res) => {
@@ -23,15 +24,30 @@ export const createUser = async (req, res) => {
       orderedFoods,
     });
 
-    res.status(201).json({
-      message: "Account created successfully",
-      user: {
-        _id: newUser._id,
+    const user = {
+      _id: newUser._id,
+      email: newUser.email,
+      phoneNumber: newUser.phoneNumber,
+      address: newUser.address,
+      role: newUser.role,
+    };
+
+    const token = jwt.sign(
+      {
+        userId: newUser._id,
         email: newUser.email,
-        phoneNumber: newUser.phoneNumber,
-        address: newUser.address,
         role: newUser.role,
       },
+      process.env.JWT_SECRET || "jwtsecret",
+      {
+        expiresIn: "7d",
+      },
+    );
+
+    res.status(201).json({
+      message: "Account created successfully",
+      token,
+      user,
     });
   } catch (error) {
     console.error("Create user error:", error);

@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 type PasswordProps = {
   password: string;
@@ -12,7 +11,8 @@ type PasswordProps = {
   confirmPassword: string;
   setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
   onBack: () => void;
-  onSubmit: () => void;
+  onSubmit: () => Promise<boolean>;
+  signupError?: string;
 };
 
 export default function PasswordPage({
@@ -22,13 +22,14 @@ export default function PasswordPage({
   setConfirmPassword,
   onBack,
   onSubmit,
+  signupError,
 }: PasswordProps) {
-  const router = useRouter();
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let valid = true;
 
     setPasswordError("");
@@ -48,9 +49,13 @@ export default function PasswordPage({
       valid = false;
     }
 
-    if (valid) {
-      onSubmit();
-      router.push("/user/login");
+    if (!valid) return;
+
+    setLoading(true);
+    try {
+      await onSubmit();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,15 +125,19 @@ export default function PasswordPage({
 
               <button
                 onClick={handleSubmit}
-                disabled={!password || !confirmPassword}
+                disabled={!password || !confirmPassword || loading}
                 className={`h-9 rounded-md text-sm font-medium transition-colors ${
-                  password && confirmPassword
+                  password && confirmPassword && !loading
                     ? "bg-[#18181B] text-white"
                     : "bg-[#E4E4E7] text-[#A1A1AA]"
                 }`}
               >
-                Let&apos;s Go
+                {loading ? "Creating..." : "Let's Go"}
               </button>
+
+              {signupError && (
+                <p className="text-center text-xs text-red-500">{signupError}</p>
+              )}
 
               <div className="text-center text-sm">
                 <span className="text-[#71717A]">
